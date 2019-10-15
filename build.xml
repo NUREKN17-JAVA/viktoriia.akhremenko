@@ -1,0 +1,48 @@
+<project name="usermanagement" basedir="." default="test">
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="main.src.dir" value="${basedir}/src/main/java"/>
+    <property name="test.src.dir" value="${basedir}/src/test/java"/>
+    <property name="lib.dir" value="${basedir}/lib"/>
+
+    <path id="classpath.test">
+        <pathelement location="${lib.dir}/junit-4.12.jar"/>
+        <pathelement location="${lib.dir}/hamcrest-core-1.3.jar"/>
+        <pathelement location="${build.dir}"/>
+    </path>
+
+    <target name="test" depends="test-compile">
+        <junit printsummary="on" haltonfailure="yes" fork="true">
+            <classpath>
+                <path refid="classpath.test"/>
+            </classpath>
+            <formatter type="plain"/>
+            <batchtest>
+                <fileset dir="${src.dir}" includes="**/*Test.java"/>
+            </batchtest>
+            <!--<test name="test.java.ua.nure.kn.akhremenko.usermanagement.UserTest"/>-->
+        </junit>
+    </target>
+
+    <target name="test-compile" depends="compile">
+        <javac srcdir="${test.src.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath refid="classpath.test"/>
+        	<classpath>
+        		<path id="org.junit" location="/Users/viktoria/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        	</classpath>
+        </javac>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${main.src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}" failonerror="no"/>
+    </target>
+
+</project>
